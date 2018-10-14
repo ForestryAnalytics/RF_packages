@@ -1,0 +1,44 @@
+
+Imputation Imputation of a numerical vector
+Description
+Imputes the values of the vector that are NaN
+Usage
+Imputation(XX)
+6 Node_cost
+Arguments
+XX a vector of size N x 1
+Details
+If a value is missing, it will be replaced by an imputed value that is an average of previous and next
+value. If previous or next value is also missing, the closest value is used as the imputed value.
+Value
+Imputed vector of size N x 1
+Node_cost Information Gain
+Description
+Compute the cost function of a tree node
+Usage
+Node_cost(y, Inv_Cov_Y, Command)
+Arguments
+y Output Features for the samples of the node
+Inv_Cov_Y Inverse of Covariance matrix of Output Response matrix for MRF(Input [0 0;0
+0] for RF)
+Command 1 for univariate Regression Tree (corresponding to RF) and 2 for Multivariate
+Regression Tree (corresponding to MRF)
+Details
+In multivariate trees (MRF) node cost is measured as the sum of squares of the Mahalanobis distance
+to capture the correlations in the data whereas in univariate trees node cost is measured as the sum
+of Euclidean distance square. Mahalanobis Distance captures the distance of the sample point from
+the mean of the node along the principal component axes.
+Value
+cost or entropy of samples in a node of a tree
+References
+Segal, Mark, and Yuanyuan Xiao. "Multivariate random forests." Wiley Interdisciplinary Reviews:
+Data Mining and Knowledge Discovery 1.1 (2011): 80-87.
+predicting 7
+Examples
+library(MultivariateRandomForest)
+y=matrix(runif(10*2),10,2)
+Inv_Cov_Y=solve(cov(y))
+Command=2
+#Command=2 for MRF and 1 for RF
+#This function calculates information gain of a node
+Cost=Node_cost(y,Inv_Cov_Y,Command)
