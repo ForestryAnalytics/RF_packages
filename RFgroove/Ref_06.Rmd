@@ -1,0 +1,106 @@
+selectGroup Grouped variable selection procedure
+Description
+A grouped backward variable selection procedure.
+Usage
+selectGroup(design, ydata, varNames, nvarGroup,
+typeRF = ifelse(is.factor(ydata), "classif", "reg"),
+verbose = TRUE, ntree = 500, ...)
+Arguments
+design The design matrix.
+ydata The outcome data. Must be a factor for classification.
+varNames The vector of the group names.
+nvarGroup The vector of the number of variables in each group.
+typeRF The type of forest we want to construct, ‘classif’ for classification or ‘reg’ for
+regression.
+verbose Should the details be printed.
+ntree The number of trees in the forests (default: 500).
+... optional parameters to be passed to the ‘varImpGroup’ function.
+Value
+An object of class fRFE which is a list with the following components:
+nselected The number of selected groups ;
+selection The selected groups ;
+selectionIndexes
+The indexes of selected groups in the input matrix ‘design’ ;
+error The prediction error computed in each iteration of the backward procedure ;
+typeRF The type of the forests, classification or regression ;
+ranking The final ranking of the groups ;
+rankingIndexes The final ranking indexes of the groups.
+10 selectLevel
+Author(s)
+Baptiste Gregorutti
+References
+Gregorutti, B., Michel, B. and Saint Pierre, P. (2015). Grouped variable importance with random
+forests and application to multiple functional data analysis, Computational Statistics and Data Analysis
+90, 15-35.
+See Also
+selectLevel,selectFunctional,varImpGroup
+Examples
+cat("\n\nClassification\n")
+data(toyClassif)
+attach(toyClassif)
+cat("Case 1\n")
+nvarGroup <- c(2,1,6); names(nvarGroup) <- paste("G", 1:length(nvarGroup), sep="")
+summary(varSel <- selectGroup(design=X, ydata=Y, nvarGroup=nvarGroup,
+verbose=TRUE, ntree=500, normalize=FALSE))
+plot(varSel)
+cat("Case 2\n")
+nvarGroup <- rep(1,9); names(nvarGroup) <- paste("G", 1:length(nvarGroup), sep="")
+summary(varSel <- selectGroup(design=X, ydata=Y, nvarGroup=nvarGroup,
+verbose=TRUE, ntree=500, normalize=FALSE))
+plot(varSel)
+detach(toyClassif)
+selectLevel Wavelet levels selection procedure
+Description
+A grouped backward variable selection procedure for selecting the most significant wavelet levels
+of a functional variable. The groups are the wavelet coefficients belonging to the same frequency
+level.
+Usage
+selectLevel(design, ydata, typeRF = ifelse(is.factor(ydata), "classif", "reg"),
+verbose = TRUE, ntree = 500, ...)
+selectLevel 11
+Arguments
+design The design matrix of a functional variable.
+ydata The outcome data. Must be a factor for classification.
+typeRF The type of forest we want to construct, ‘classif’ for classification or ‘reg’ for
+regression.
+verbose Should the details be printed.
+ntree The number of trees in the forests (default: 500).
+... optional parameters to be passed to the ‘varImpGroup’ function.
+Value
+An object of class fRFE which is a list with the following components:
+nselected The number of selected wavelet levels.
+selection The selected wavelet levels.
+selectionIndexes
+The indexes of selected wavelet levels in the input matrix ‘design’.
+error The prediction error computed in each iteration of the backward procedure.
+typeRF The type of the forests, classification or regression.
+ranking The final ranking of the wavelet levels.
+rankingIndexes The final ranking indexes of the wavelet levels.
+Author(s)
+Baptiste Gregorutti
+References
+Gregorutti, B., Michel, B. and Saint Pierre, P. (2015). Grouped variable importance with random
+forests and application to multiple functional data analysis, Computational Statistics and Data Analysis
+90, 15-35.
+See Also
+selectGroup,selectFunctional,varImpGroup
+Examples
+data(toyRegFD)
+x <- toyRegFD$FDlist[[1]]
+y <- toyRegFD$Y
+design <- projectWavelet(xdata=x)
+summary(levSel <- selectLevel(design, y, ntree=100, verbose=TRUE))
+plot(levSel)
+12 toyClassif
+summary.fRFE Summary function for object of class fRFE
+Description
+A summary function of an object of class fRFE which is the result of the functions selectFunctional,
+selectGroup and selectLevel.
+Usage
+## S3 method for class 'fRFE'
+summary(object, ...)
+Arguments
+object An object of class fRFE.
+... further arguments passed to or from other methods.
+Author(s)
+Baptiste Gregorutti
