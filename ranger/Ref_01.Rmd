@@ -1,0 +1,208 @@
+Package ‘ranger’
+June 4, 2018
+Type Package
+Title A Fast Implementation of Random Forests
+Version 0.10.1
+Date 2018-05-29
+Author Marvin N. Wright [aut, cre], Stefan Wager [ctb], Philipp Probst [ctb]
+Maintainer Marvin N. Wright <cran@wrig.de>
+#### Description A fast implementation of Random Forests, particularly suited for high
+dimensional data. Ensembles of classification, regression, survival and
+probability prediction trees are supported. Data from genome-wide association
+studies can be analyzed efficiently. In addition to data frames, datasets of
+class 'gwaa.data' (R package 'GenABEL') and 'dgCMatrix' (R package 'Matrix')
+can be directly analyzed.
+License GPL-3
+Imports Rcpp (>= 0.11.2), Matrix
+LinkingTo Rcpp, RcppEigen
+Depends R (>= 3.1)
+Suggests survival, testthat
+RoxygenNote 6.0.1
+URL https://github.com/imbs-hl/ranger
+BugReports https://github.com/imbs-hl/ranger/issues
+NeedsCompilation yes
+Repository CRAN
+Date/Publication 2018-06-04 09:27:54 UTC
+R topics documented:
+csrf . . . . . 2
+getTerminalNodeIDs . . . . 3
+holdoutRF . . 4
+1
+2 csrf
+importance.ranger . . . . . . 5
+importance_pvalues . . . . . 5
+parse.formula 7
+predict.ranger 8
+predict.ranger.forest . . . . . 9
+predictions.ranger . . . . . . 11
+predictions.ranger.prediction 12
+print.ranger . 13
+print.ranger.forest . . . . . . 13
+print.ranger.prediction . . . . 14
+ranger . . . . 14
+timepoints.ranger . . . . . . 20
+timepoints.ranger.prediction 21
+treeInfo . . . 21
+Index 23
+
+
+csrf Case-specific random forests.
+#### Description
+In case-specific random forests (CSRF), random forests are built specific to the cases of interest.
+Instead of using equal probabilities, the cases are weighted according to their difference to the case
+of interest.
+#### Usage
+csrf(formula, training_data, test_data, params1 = list(), params2 = list())
+Arguments
+formula Object of class formula or character describing the model to fit.
+training_data Training data of class data.frame.
+test_data Test data of class data.frame.
+params1 Parameters for the proximity random forest grown in the first step.
+params2 Parameters for the prediction random forests grown in the second step.
+#### Details
+The algorithm consists of 3 steps:
+1. Grow a random forest on the training data
+2. For each observation of interest (test data), the weights of all training observations are computed
+by counting the number of trees in which both observations are in the same terminal
+node.
+getTerminalNodeIDs 3
+3. For each test observation, grow a weighted random forest on the training data, using the
+weights obtained in step 2. Predict the outcome of the test observation as usual.
+In total, n+1 random forests are grown, where n is the number observations in the test dataset. For
+#### Details, see Xu et al. (2014).
+Value
+Predictions for the test dataset.
+Author(s)
+Marvin N. Wright
+#### References
+Xu, R., Nettleton, D. & Nordman, D.J. (2014). Case-specific random forests. J Comp Graph Stat
+25:49-65. http://dx.doi.org/10.1080/10618600.2014.983641.
+Examples
+## Split in training and test data
+train.idx <- sample(nrow(iris), 2/3 * nrow(iris))
+iris.train <- iris[train.idx, ]
+iris.test <- iris[-train.idx, ]
+## Run case-specific RF
+csrf(Species ~ ., training_data = iris.train, test_data = iris.test,
+params1 = list(num.trees = 50, mtry = 4),
+params2 = list(num.trees = 5))
+getTerminalNodeIDs Get terminal node IDs (deprecated)
+#### Description
+This function is deprecated. Please use predict() with type = "terminalNodes" instead. This
+function calls predict() now.
+#### Usage
+getTerminalNodeIDs(rf, dat)
+Arguments
+rf ranger object.
+dat New dataset. Terminal node IDs for this dataset are obtained.
+4 holdoutRF
+Value
+Matrix with terminal nodeIDs for all observations in dataset and trees.
+Examples
+library(ranger)
+rf <- ranger(Species ~ ., data = iris, num.trees = 5, write.forest = TRUE)
+getTerminalNodeIDs(rf, iris)
+holdoutRF Hold-out random forests
+#### Description
+Grow two random forests on two cross-validation folds. Instead of out-of-bag data, the other fold
+is used to compute permutation importance. Related to the novel permutation variable importance
+by Janitza et al. (2015).
+#### Usage
+holdoutRF(...)
+Arguments
+... All arguments are passed to ranger() (except importance, case.weights,
+replace and holdout.).
+Value
+Hold-out random forests with variable importance.
+Author(s)
+Marvin N. Wright
+#### References
+Janitza, S., Celik, E. & Boulesteix, A.-L., (2015). A computationally fast variable importance test
+for random forests for high-dimensional data. Adv Data Anal Classif http://dx.doi.org/10.
+1007/s11634-016-0276-4.
+See Also
+ranger
+importance.ranger 5
+importance.ranger ranger variable importance
+#### Description
+Extract variable importance of ranger object.
+#### Usage
+## S3 method for class 'ranger'
+importance(x, ...)
+Arguments
+x ranger object.
+... Further arguments passed to or from other methods.
+Value
+Variable importance measures.
+Author(s)
+Marvin N. Wright
+See Also
+ranger
+importance_pvalues ranger variable importance p-values
+#### Description
+Compute variable importance with p-values. For high dimensional data, the fast method of Janitza
+et al. (2016) can be used. The permutation approach of Altmann et al. (2010) is computationally
+intensive but can be used with all kinds of data. See below for #### Details.
+#### Usage
+importance_pvalues(x, method = c("janitza", "altmann"),
+num.permutations = 100, formula = NULL, data = NULL, ...)
+6 importance_pvalues
+Arguments
+x ranger or holdoutRF object.
+method Method to compute p-values. Use "janitza" for the method by Janitza et al.
+(2016) or "altmann" for the non-parametric method by Altmann et al. (2010).
+num.permutations
+Number of permutations. Used in the "altmann" method only.
+formula Object of class formula or character describing the model to fit. Used in the
+"altmann" method only.
+data Training data of class data.frame or matrix. Used in the "altmann" method only.
+... Further arguments passed to ranger(). Used in the "altmann" method only.
+#### Details
+The method of Janitza et al. (2016) uses a clever trick: With an unbiased variable importance
+measure, the importance values of non-associated variables vary randomly around zero. Thus,
+all non-positive importance values are assumed to correspond to these non-associated variables and
+they are used to construct a distribution of the importance under the null hypothesis of no association
+to the response. Since only the non-positive values of this distribution can be observed, the positive
+values are created by mirroring the negative distribution. See Janitza et al. (2016) for #### Details.
+The method of Altmann et al. (2010) uses a simple permutation test: The distribution of the importance
+under the null hypothesis of no association to the response is created by several replications
+of permuting the response, growing an RF and computing the variable importance. The authors
+recommend 50-100 permutations. However, much larger numbers have to be used to estimate more
+precise p-values. We add 1 to the numerator and denominator to avoid zero p-values.
+Value
+Variable importance and p-value for each variable.
+Author(s)
+Marvin N. Wright
+#### References
+Janitza, S., Celik, E. & Boulesteix, A.-L., (2016). A computationally fast variable importance test
+for random forests for high-dimensional data. Adv Data Anal Classif http://dx.doi.org/10.
+1007/s11634-016-0276-4.
+Altmann, A., Tolosi, L., Sander, O. & Lengauer, T. (2010). Permutation importance: a corrected
+feature importance measure, Bioinformatics 26:1340-1347.
+See Also
+ranger
+parse.formula 7
+Examples
+require(ranger)
+## Janitza's p-values with corrected Gini importance
+n <- 50
+p <- 400
+dat <- data.frame(y = factor(rbinom(n, 1, .5)), replicate(p, runif(n)))
+rf.sim <- ranger(y ~ ., dat, importance = "impurity_corrected")
+importance_pvalues(rf.sim, method = "janitza")
+## Permutation p-values
+## Not run:
+rf.iris <- ranger(Species ~ ., data = iris, importance = 'permutation')
+importance_pvalues(rf.iris, method = "altmann", formula = Species ~ ., data = iris)
+## End(Not run)
+parse.formula Parse formula
+#### Description
+Parse formula and return dataset containing selected columns. Interactions are supported for numerical
+columns only. An interaction column is the product of all interacting columns.
+#### Usage
+parse.formula(formula, data)
+Arguments
+formula Object of class formula or character describing the model to fit.
+data Training data of class data.frame.
+Value
+Dataset including selected columns and interactions.
