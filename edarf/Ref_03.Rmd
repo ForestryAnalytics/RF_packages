@@ -1,39 +1,27 @@
-plot_imp Plot variable importance from random forests
-Description
+## ``plot_imp`` Plot variable importance from random forests
+
+#### Description
+
 Plot variable importance from random forests
 
 #### Usage
+
+<pre><code>
 plot_imp(imp, sort = "decreasing")
+</code></pre>
 
 #### Arguments
-imp object of class c("importance", "data.frame") as returned by variable_importance
-sort character indicating if sorting of the output is to be done. can be "ascending", or
-"descending."
-Value
+* ``imp`` : object of class ``c("importance", "data.frame")`` as returned by ``variable_importance``.
+* ``sort``: character indicating if sorting of the output is to be done. can be "ascending", or "descending."
+
+#### Value
 a ggplot2 object
 
 #### Examples
+```{r]
 library(randomForest)
 data(iris)
 fit = randomForest(Species ~ ., iris)
 imp = variable_importance(fit, nperm = 2, data = iris)
 plot_imp(imp)
-plot_pd 5
-plot_pd Plot partial dependence from random forests
-Description
-Plot partial dependence from random forests
-Usage
-plot_pd(pd, facet = NULL)
-Arguments
-pd object of class c("pd", "data.frame") as returned by partial_dependence
-facet a character vector indicating the variable that should be used to facet on if interaction
-is plotted. If not specified the variable with less unique values is chosen.
-Value
-a ggplot2 object
-Examples
-library(randomForest)
-library(edarf)
-data(iris)
-fit = randomForest(Species ~ ., iris)
-pd = partial_dependence(fit, "Petal.Width", data = iris)
-plot_pd(pd)
+```
