@@ -1,4 +1,5 @@
 ## selectFunctional Grouped variable selection procedure for functional data
+
 #### Description
 Backward variable selection procedure for multivariate functional data which is a set of p functional
 covariates and n observations of dimension N.
@@ -22,30 +23,34 @@ of size n x N.
 
 
 #### Examples
+```{r}
 data(toyRegFD)
 varSel <- selectFunctional( toyRegFD$FDlist, toyRegFD$Y, normalize=FALSE,
 dimensionReductionMethod="fpca", nbasisInit=16,
 verbose=FALSE, ntree=10)
+```
+```{r}
 summary(varSel)
 plot(varSel)
-
+```
 #### Value
 An object of class fRFE which is a list with the following components:
-nselected The number of selected functional variables ;
-selection The selected functional variables ;
-selectionIndexes
-The indexes of selected functional variables in the input data ‘FDlist’ ;
-error The prediction error computed in each iteration of the backward procedure ;
-typeRF The type of the forests, classification or regression ;
-ranking The final ranking of the functional variables ;
-rankingIndexes The final ranking indexes of the functional variables.
+* nselected The number of selected functional variables ;
+* selection The selected functional variables ;
+* selectionIndexes The indexes of selected functional variables in the input data ‘FDlist’ ;
+* error The prediction error computed in each iteration of the backward procedure ;
+* typeRF The type of the forests, classification or regression ;
+* ranking The final ranking of the functional variables ;
+* rankingIndexes The final ranking indexes of the functional variables.
 
 #### Author(s)
 Baptiste Gregorutti
-References
+
+#### References
 Gregorutti, B., Michel, B. and Saint Pierre, P. (2015). Grouped variable importance with random
 forests and application to multiple functional data analysis, Computational Statistics and Data Analysis
 90, 15-35.
-See Also
+
+####See Also
 selectGroup,varImpGroup
 selectGroup 9
