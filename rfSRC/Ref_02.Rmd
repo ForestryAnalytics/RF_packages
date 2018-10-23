@@ -6,19 +6,23 @@ univariate and multivariate forests. Can be used for both training and testing p
 Usage
 ## S3 method for class 'rfsrc'
 quantileReg(obj, oob = TRUE, prob = (1:10) / 10, newdata = NULL)
-Arguments
+</code></pre>
+#### Arguments 
+
 obj A previously grown forest.
 oob Return OOB (out-of-bag) quantiles? If false, in-bag values are returned.
 prob Target quantile probabilities.
 newdata Test data (optional) over which conditional quantiles are evaluated over.
-Details
+#### Details
 Given a regression forest, or a multivariate forest with at least one regression outcome, returns the
 conditional quantiles for the target outcomes. Also returns the conditional density, which can be
 used to calculate conditional moments, such as the mean and standard deviation.
-Value
+#### Value 
+
 Quantiles for each of the requested probabilities, conditional density (and conditional cdf) for each
 unique y-value, are returned for each data point in the training set, or if a test set is provided, the
-values are returned for each data point in the test data. If more than one target outcome is available,
+#### Value 
+s are returned for each data point in the test data. If more than one target outcome is available,
 the returned object will be a list of length equal to the number of target outcomes.
 Author(s)
 Hemant Ishwaran and Udaya B. Kogalur
@@ -147,7 +151,9 @@ rfsrc(formula, data, ntree = 1000,
       statistics = FALSE,
       ...)
 44 rfsrc
-Arguments
+</code></pre>
+#### Arguments 
+
 formula A symbolic description of the model to be fit. If missing, unsupervised splitting
 is implemented.
 data Data frame containing the y-outcome and x-variables.
@@ -176,7 +182,8 @@ implements permutation VIMP. See below for more details.
 block.size Should the cumulative error rate be calculated on every tree? When NULL, it will
 only be calculated on the last tree and the plot of the cumulative error rate will
 result in a flat line. To view the cumulative error rate on every nth tree, set the
-value to an integer between 1 and ntree. As an intended side effect, if importance
+#### Value 
+ to an integer between 1 and ntree. As an intended side effect, if importance
 is requested, VIMP is calculated in "blocks" of size equal to block.size,
 thus resulting in a useful compromise between ensemble and permutation VIMP.
 The default action is to use 10 trees. See VIMP below for more details.
@@ -284,7 +291,7 @@ do.trace Number of seconds between updates to the user on approximate time to co
 statistics Should split statistics be returned? Values can be parsed using stat.split.
 ... Further arguments passed to or from other methods.
 rfsrc 47
-Details
+#### Details
 1. Families
 Do *not* set this value as the package automagically determines the underlying random forest
 family from the type of response and the formula supplied. There are eight possible scenarios:
@@ -333,7 +340,7 @@ rule modeled after Gray’s test (Gray, 1988).
 (b) logrank implements weighted log-rank splitting where each event type is treated as
 the event of interest and all other events are treated as censored. The split rule is the
 weighted value of each of log-rank statistics, standardized by the variance. For more
-details see Ishwaran et al. (2014).
+#### Details see Ishwaran et al. (2014).
 • Custom splitting: All families except unsupervised are available for user defined custom
 splitting. Some basic C-programming skills are required. The harness for defining these
 rules is in splitCustom.c. In this file we give examples of how to code rules for regression,
@@ -352,7 +359,8 @@ splitrule="random". See below for more details regarding randomized splitting ru
 3. Allowable data types
 Data types must be real valued, integer, factor or logical – however all except factors are
 coerced and treated as if real valued. For ordered x-variable factors, splits are similar to real
-valued variables. If the x-variable factor is unordered, a split will move a subset of the levels
+#### Value 
+d variables. If the x-variable factor is unordered, a split will move a subset of the levels
 in the parent node to the left daughter, and the complementary subset to the right daughter. All
 possible complementary pairs are considered and apply to factors with an unlimited number of
 levels. However, there is an optimization check to ensure that the number of splits attempted
@@ -378,7 +386,8 @@ options sampsize and samptype.
 rfsrc 49
 • Unique time points
 For large survival problems, users should consider setting ntime to a reasonably small
-value (such as 50 or 100). This constrains ensemble calculations such as survival functions
+#### Value 
+ (such as 50 or 100). This constrains ensemble calculations such as survival functions
 to a restricted grid of time points of length no more than ntime and considerably
 reduces computational times.
 • Large number of variables
@@ -509,7 +518,8 @@ and VIMP become optimistically biased.
 Finally, records in which all outcome and x-variable information are missing are removed
 from the forest analysis. Variables having all missing values are also removed.
 See the function impute for a fast impute interface.
-Value
+#### Value 
+
 An object of class (rfsrc, grow) with the following components:
   call The original call to rfsrc.
 family The family used in the analysis.
@@ -531,8 +541,10 @@ split.wt Vector of non-negative weights where entry k, after normalizing, is the
 by which the split statistic for a covariate is adjusted.
 cause.wt Vector of weights used for the composite competing risk splitting rule.
 leaf.count Number of terminal nodes for each tree in the forest. Vector of length ntree. A
-value of zero indicates a rejected tree (can occur when imputing missing data).
-Values of one indicate tree stumps.
+#### Value 
+ of zero indicates a rejected tree (can occur when imputing missing data).
+#### Value 
+s of one indicate tree stumps.
 proximity Proximity matrix recording the frequency of pairs of data points occur within
 the same terminal node.
 forest If forest=TRUE, the forest object is returned. This object is used for prediction
@@ -579,7 +591,8 @@ cif.oob OOB CIF.
 time.interest Ordered unique event times.
 ndead Number of events.
 Note
-Values returned depend heavily on the family. In particular, predicted and predicted.oob are the
+#### Value 
+s returned depend heavily on the family. In particular, predicted and predicted.oob are the
 following values calculated using in-bag and OOB data:
   1. For regression, a vector of predicted y-responses.
 2. For classification, a matrix with columns containing the estimated class probability for each
