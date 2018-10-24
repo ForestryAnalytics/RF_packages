@@ -1,0 +1,35 @@
+## nrmse
+Normalized Root Mean Squared Error
+
+#### Description
+’nrmse’ computes the normalized root mean squared error for a given complete data matrix, imputed
+data matrix and the data matrix containing missing values.
+
+#### Usage
+nrmse(ximp, xmis, xtrue)
+
+#### Arguments
+ximp
+xmis
+xtrue
+imputed data matrix with variables in the columns and observations in the rows.
+Note there should not be any missing values.
+data matrix with missing values.
+complete data matrix. Note there should not be any missing values.
+
+#### Value
+see Title.
+Note
+The NRMSE can only be computed for continuous data. For categorical or mixed-type data see
+mixError.
+This function is internally used by mixError.
+
+#### Author(s)
+Daniel J. Stekhoven, <stekhoven@stat.math.ethz.ch>
+
+#### References
+Oba et al. (2003), ’A Bayesian missing value estimation method for gene expression profile data’,
+Bioinformatics, 19(16), 2088-2096
+See Also
+mixError8
+varClass
