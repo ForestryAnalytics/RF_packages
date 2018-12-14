@@ -1,4 +1,14 @@
-## selectFunctional Grouped variable selection procedure for functional data
+---
+title: "``selectFunctional``"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(RFgroove)
+```
+
+### Grouped variable selection procedure for functional data
 
 #### Description
 Backward variable selection procedure for multivariate functional data which is a set of p functional
