@@ -1,3 +1,13 @@
+---
+title: "``selectFunctional``"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(RFgroove)
+```
+
 ## ``partial_dependence`` Partial dependence using random forests
 
 #### Description
