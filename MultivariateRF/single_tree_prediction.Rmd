@@ -1,3 +1,14 @@
+---
+title: "``single_tree_prediction``"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(MultivariateRandomForest)
+```
+
+
 ## single_tree_prediction
 Prediction of Testing Samples for single tree
 

@@ -1,3 +1,13 @@
+---
+title: "``build_single_tree``"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(MultivariateRandomForest)
+```
+
 ## ``build_single_tree`` Model of a single tree of Random Forest or Multivariate Random Forest
 
 #### Description
