@@ -1,4 +1,13 @@
-## ``predict.ranger`` Ranger prediction
+---
+title: "``predict.ranger``"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(ranger)
+```
+##  Ranger prediction
 
 #### Description
 Prediction with new data and a saved forest from Ranger.
