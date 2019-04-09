@@ -1,4 +1,13 @@
-## ``plot_prox`` Plot principle components of the proximity matrix
+---
+title: "``edarf::plot_prox``"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(edarf)
+```
+
 
 #### Description
 Plot principle components of the proximity matrix
